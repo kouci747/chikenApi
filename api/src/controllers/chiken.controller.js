@@ -121,10 +121,12 @@ exports.alterRemoveFavoriteFood = async (req, res) => {
 exports.incrementSteps = async (req, res) => {
   await Chiken.findByIdAndUpdate(
     req.params.id,
-    { $inc: { steps: 1 } },
+    { $inc: { steps: 1 }, $set: { isRunning: true } }, //puisque le poulet avance pas à pas, alors isRunning doit passer de false à true
+
     { new: true, upsert: true },
     console.log("nombre de steps incrémenté de 1")
   );
+
   return res
     .status(200)
     .send("nombre de pas incrementé, ce poulet commence à faire du chemin...");
