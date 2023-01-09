@@ -11,7 +11,7 @@ router.get("/getChikens", chikenController.getChiken);
 // //Récupérer un poulet précis grace à son ID
 router.get("/:id", chikenController.getOneChiken);
 
-// //Modifier un ou des champs d'un poulet particulier grace à son ID
+// //Modifierun poulet particulier grace à son ID
 // router.put("/:id", chikenController.updateChiken);
 
 // //Supprimer un poulet grace à son ID

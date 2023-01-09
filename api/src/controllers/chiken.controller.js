@@ -1,3 +1,5 @@
+//permet de vérifier l'existence en BDD d'un ObjectID
+const { isValidObjectId } = require("mongoose");
 const chikenModel = require("../models/chiken.model.js");
 const Chiken = require("../models/chiken.model.js");
 
@@ -28,6 +30,17 @@ exports.getChiken = (req, res) => {
 };
 
 exports.getOneChiken = (req, res) => {
+  //on vérifie que l'ID du poulet passé en paramètre dans l'URL existe en BDD
+  if (!isValidObjectId(req.params.id)) {
+    return res
+      .status(400)
+      .send(
+        "Le poulet que vous recherchez ne semble pas exister en BDD..peut-etre est-il toujours dans son oeuf ?! :" +
+          req.params.id +
+          console.log(` ${req.params.id}`)
+      );
+  }
+
   Chiken.findById(req.params.id).then((chiken) => {
     if (!chiken) {
       return res.status(404).send({
