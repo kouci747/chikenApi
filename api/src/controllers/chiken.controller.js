@@ -67,7 +67,11 @@ exports.updateChiken = async (req, res) => {
       res.status(400).send(err);
     });
 };
-
+/**
+ *bla
+ * @param {*} req
+ * @param {*} res
+ */
 exports.deleteOneChiken = async (req, res) => {
   await Chiken.findByIdAndDelete(req.params.id)
     .then((chiken) =>
@@ -118,6 +122,15 @@ exports.alterRemoveFavoriteFood = async (req, res) => {
     );
 };
 
+/**
+ *
+ * @param {*} req : permet de récupérer les para
+ * @param {*} res
+ * @param {boolean} isRunning : variable initialement à false, deviendra true lorsque le nombre de steps sera incrementé
+ * @param $inc : {steps :1} : incrémente la valeur du field steps de 1
+ * @param $set: { isRunning: true } : fait passer la variable isRunning de son état par défaut (false) à true, et ce à cause du fait que la variable steps a été incrémentée
+ * @returns
+ */
 exports.incrementSteps = async (req, res) => {
   await Chiken.findByIdAndUpdate(
     req.params.id,
