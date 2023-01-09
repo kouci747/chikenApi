@@ -8,16 +8,30 @@ router.post("/createChiken", chikenController.createChiken);
 //Récupérer tous les poulets de la BDD : GET http://localhost:5000/api/v1/chiken/getChikens
 router.get("/getChikens", chikenController.getChiken);
 
-// //Récupérer un poulet précis grace à son ID
+// //Récupérer un poulet précis grace à son ID  : GET http://localhost:5000/api/v1/chiken/63bc13508fb6df96a3b552e2
 router.get("/:id", chikenController.getOneChiken);
 
-// //Modifierun poulet particulier grace à son ID
-// router.put("/:id", chikenController.updateChiken);
+// //Modifier un poulet particulier grace à son ID PUT http://localhost:5000/api/v1/chiken/63bc13508fb6df96a3b552e2
+router.put("/:id", chikenController.updateChiken);
 
-// //Supprimer un poulet grace à son ID
-// router.delete("/:id", chikenController.deleteOneChiken);
+// //Supprimer un poulet grace à son ID DELETE : http://localhost:5000/api/v1/chiken/63bc23b8c65aab84d0368d2a
+router.delete("/:id", chikenController.deleteOneChiken);
 
-// //Modifier un champs précis du document chiken
-// router.patch("/Chiken/:id", chikenController.alterChiken);
+// //Modifier un champs précis du document chiken : PATCH : http://localhost:5000/api/v1/chiken/alterChiken/63bc13508fb6df96a3b552e2
+router.patch("/alterChiken/:id", chikenController.alterChiken);
+
+//modifier le tableau contenant la nouriture favorite d'un poulet (PATCH) http://localhost:5000/api/v1/chiken/alterAddFavoriteFood/63bc13508fb6df96a3b552e2
+router.patch(
+  "/alterAddFavoriteFood/:id",
+  chikenController.alterAddFavoriteFood
+);
+
+//modifier le tableau [favoriteFood] : retirer la nourriture favorite d'un poulet : PATCH http://localhost:5000/api/v1/chiken/alterRemoveFavoriteFood/63bc13508fb6df96a3b552e2
+router.patch(
+  "/alterRemoveFavoriteFood/:id",
+  chikenController.alterRemoveFavoriteFood
+);
+// incrémenter le nombre de steps d'un poulet spécifique
+router.patch("/incrementSteps/:id", chikenController.incrementSteps);
 
 module.exports = router;

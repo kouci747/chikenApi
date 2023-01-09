@@ -13,12 +13,12 @@ exports.createChiken = (req, res) => {
 
   //infos renvoyées au front
   res.send({
-    message: `le nouveau poulet ${req.body.name}a été créé avec succès`,
+    message: `le nouveau poulet ${req.body.name} a été créé avec succès`,
   });
 };
 
-exports.getChiken = (req, res) => {
-  Chiken.find()
+exports.getChiken = async (req, res) => {
+  await Chiken.find()
     .then((chikens) => {
       res.send(chikens);
     })
@@ -29,7 +29,7 @@ exports.getChiken = (req, res) => {
     );
 };
 
-exports.getOneChiken = (req, res) => {
+exports.getOneChiken = async (req, res) => {
   //on vérifie que l'ID du poulet passé en paramètre dans l'URL existe en BDD
   if (!isValidObjectId(req.params.id)) {
     return res
@@ -41,7 +41,7 @@ exports.getOneChiken = (req, res) => {
       );
   }
 
-  Chiken.findById(req.params.id).then((chiken) => {
+  await Chiken.findById(req.params.id).then((chiken) => {
     if (!chiken) {
       return res.status(404).send({
         message:
@@ -50,4 +50,82 @@ exports.getOneChiken = (req, res) => {
     }
     res.status(200).send("poulet trouvé:" + chiken);
   });
+};
+
+exports.updateChiken = async (req, res) => {
+  //modifier l'objet dont l'ID est passé en paramètre, {new : true} permet de retourner l'object mis à jour dans la réponse
+  await Chiken.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((chiken) => {
+      if (!chiken) {
+        return res.status(404).send({
+          message: "le poulet que vous voulez modifier n existe pas",
+        });
+      }
+      res.send(chiken);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+};
+
+exports.deleteOneChiken = async (req, res) => {
+  await Chiken.findByIdAndDelete(req.params.id)
+    .then((chiken) =>
+      res.send({
+        message: `le poulet dont l'ID est ${chiken._id} a été passé à la rotisserie`,
+      })
+    )
+    .catch((err) => res.status(400).send(err));
+};
+
+exports.alterChiken = async (req, res) => {
+  await Chiken.findByIdAndUpdate(
+    req.params.id,
+    { name: req.body.modifiedName },
+    { new: true, upsert: true },
+    console.log("nom du poulet modifié")
+  );
+  return res.status(200).send("nom du poulet modifié");
+};
+
+//PATCH : modifier le tableau favoriteFood d'un poulet pour y ajouter une nouriture favorite
+exports.alterAddFavoriteFood = async (req, res) => {
+  await Chiken.findByIdAndUpdate(
+    req.params.id,
+    { $addToSet: { favoriteFood: req.body.foodToAdd } }, //la méthode $addToSet permet d'ajouter quelque chose à l'array [favoriteFood] du Chiken Model
+    { new: true, upsert: true },
+    console.log("nourriture ajoutée"),
+    res.status(201).send("vous avez ajouté un aliment aux favoris du poulet"),
+
+    //callback
+    (err, docs) => {
+      if (err) return res.status(400).json(err);
+    }
+  );
+};
+
+exports.alterRemoveFavoriteFood = async (req, res) => {
+  await Chiken.findByIdAndUpdate(
+    req.params.id,
+    { $pull: { favoriteFood: req.body.foodToRemove } }, //la méthode $pull permet de retirer quelque cjose à l'array  [favoriteFood] du Chiken Model
+    { new: true, upsert: true },
+    console.log("nourriture retirée")
+  );
+  return res
+    .status(200)
+    .send(
+      "nourriture bien retirée, ce poulet fait la fine bouche (ou fin bec ?!)"
+    );
+};
+
+exports.incrementSteps = async (req, res) => {
+  await Chiken.findByIdAndUpdate(
+    req.params.id,
+    { $inc: { steps: 1 } },
+    { new: true, upsert: true },
+    console.log("nombre de steps incrémenté de 1")
+  );
+  return res
+    .status(200)
+    .send("nombre de pas incrementé, ce poulet commence à faire du chemin...");
 };
