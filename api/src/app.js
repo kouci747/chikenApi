@@ -11,6 +11,10 @@ app.use(bodyParser.json());
 
 mongoose.set("strictQuery", false);
 //nom de la collection : chikenApi
+
+/**
+ * test
+ */
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.mongodb.net/chikenApi?retryWrites=true&w=majority`
