@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+/**
+ * crée un Schema de base de donnée + un lien entre le document Chiken et le document Coop
+ */
 
 const chikenSchema = mongoose.Schema(
   {
@@ -27,6 +30,11 @@ const chikenSchema = mongoose.Schema(
     },
     favoriteFood: {
       type: [String],
+    },
+
+    coop: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Coop", //crée un lien de Chiken vers Coop
     },
   },
   {

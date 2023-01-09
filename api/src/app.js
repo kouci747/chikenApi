@@ -13,7 +13,7 @@ mongoose.set("strictQuery", false);
 //nom de la collection : chikenApi
 
 /**
- * test
+ * String de connexion
  */
 mongoose
   .connect(
