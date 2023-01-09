@@ -32,6 +32,6 @@ router.patch(
   chikenController.alterRemoveFavoriteFood
 );
 // incrémenter le nombre de steps d'un poulet spécifique
-router.patch("/incrementSteps/:id", chikenController.incrementSteps);
+router.patch("/run/:id", chikenController.incrementSteps);
 
 module.exports = router;
